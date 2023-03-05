@@ -1,8 +1,10 @@
 #ifndef INC_MAIN
 #define INC_MAIN
 
-#include <NTL/ZZ.h>
 
+#include <iostream>
+#include <NTL/ZZ.h>
+#include "prime.h"
 
 
 #endif
