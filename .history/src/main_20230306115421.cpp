@@ -15,7 +15,7 @@ bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
 
     // Compute: x = pow(ran, d) % number
     x = PowerMod(ran, d, number);
-
+    cout << "\n x:" << x;
     if ( x == 1 ) return false;
 
     // Below loop mainly runs 'r-1' times.
@@ -25,6 +25,12 @@ bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
         i += 1;
     } while( i<r && x != 1 );
 
+    
+
+
+    cout << "\n y:" << y;
+    
+    printf("\nn:");
     return (x != 1) || (y != number-1);
 
 }

@@ -15,7 +15,7 @@ bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
 
     // Compute: x = pow(ran, d) % number
     x = PowerMod(ran, d, number);
-
+    cout << "\n x:" << x;
     if ( x == 1 ) return false;
 
     // Below loop mainly runs 'r-1' times.
@@ -25,6 +25,12 @@ bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
         i += 1;
     } while( i<r && x != 1 );
 
+    
+
+
+    cout << "\n y:" << y;
+    
+    printf("\nn:");
     return (x != 1) || (y != number-1);
 
 }
@@ -49,19 +55,20 @@ bool isPrime(const ZZ& number, long accurancy){
     d = (number)/2;
     r = 1;
 
-    while ( d % 2 == 0)
-    {
+    do{
         r += 1;
-        d /= 2;    
-    }
+        d /= 2;
+    }while( d%2 == 0);
+    
+    cout << "\nd: " << d;
 
     // then we had d and r
-    ZZ ran; // random number from 0 to number-1
-    for(int i = 0; i < accurancy; i+=1){
-        ran = RandomBnd(number);
+    // ZZ ran; // random number from 0 to number-1
+    // for(int i = 0; i < accurancy; i+=1){
+    //     ran = RandomBnd(number);
 
-        if( MillerTest(number, d, r, ran) ) return false;
-    }
+    //     if( MillerTest(number, d, r, ran) ) return false;
+    // }
 
     return true;
 
@@ -76,11 +83,10 @@ int main()
   
   
   if (isPrime(n, 10))
-     cout << "\n" << n << " is probably prime\n";
+     cout << n << " is probably prime\n";
   else
-     cout << "\n" << n << " is composite\n";
-  
-  return 0;
+     cout << n << " is composite\n";
+
 
 }
 
