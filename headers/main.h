@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <NTL/ZZ.h>
-#include "prime.h"
 
 
 #endif
