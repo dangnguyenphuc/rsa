@@ -21,6 +21,6 @@ In "NTL Testing" commit, I had pushed a testing NTL library program by C++.
 
 ## Compile these file
 Compile file in __src/__ and export binary file to __debug/__
-'''
+```bash
 g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -lgmp -lm
-'''
+```
