@@ -5,53 +5,6 @@
 using namespace std;
 using namespace NTL;
 
-// Euclide
-ZZ gcd(ZZ number1, ZZ number2){
-    if (number1 == 0) return number2;
-    return gcd(number2%number1 , number1);
-}
-
-// Extended Euclide to find invert number
-bool extendedEuclid(const ZZ& number1, const ZZ& number2, ZZ& t){
-/*
-Bézout's identity asserts that "number1" and "number2" are coprime if and only if there exist integers s and t such that
-    number2*s + number1*t = 1
-    Reducing this identity modulo number2 give:
-    number1*t = 1 mod number2     
-    ===============> Phù hợp để tìm số nghịch đảo do Định nghĩa số nghịch đảo của w là w^(-1) với w^(-1) * w = 1
-*/
-    t = 0;
-    ZZ newt(1);
-    ZZ r;
-    ZZ newr;
-    ZZ quotient;
-
-    r = number2;
-    newr = number1;
-
-    ZZ temp1, temp2;
-
-    while (newr != 0)
-    {
-        quotient = r / newr;
-        
-        temp1 = t;
-        t = newt;
-        newt = temp1 - quotient*newt;
-
-        temp2 = r;
-        r = newr;
-        newr = temp2 - quotient*newr;
-
-    }
-
-    if (r > 1) return 0;
-    if (t < 0) t = t + number2;
-    return 1;
-    
-
-}
-
 ZZ modMul(const ZZ& number1, const ZZ& number2, const ZZ& mod){
     return (number1*number2) % mod;
 }
@@ -139,8 +92,7 @@ int main()
     ZZ n;
     cout << "n: ";
     cin >> n;
-    // Example: Prime number is
-    // 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000174295123051
+
 
     if (isPrime(n, 10))
         cout << "\n" << n << " is probably prime\n";
@@ -149,12 +101,5 @@ int main()
 
     return 0;
 
-    // ZZ n2;
-    // cout << "n2: ";
-    // cin >> n2;
-    // ZZ invert_n;
-    // cout << extendedEuclid(n,n2,invert_n);
-    // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide :)
 }
 

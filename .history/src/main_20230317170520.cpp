@@ -142,19 +142,18 @@ int main()
     // Example: Prime number is
     // 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000174295123051
 
-    if (isPrime(n, 10))
-        cout << "\n" << n << " is probably prime\n";
-    else
-        cout << "\n" << n << " is composite\n";
+    // if (isPrime(n, 10))
+    //     cout << "\n" << n << " is probably prime\n";
+    // else
+    //     cout << "\n" << n << " is composite\n";
 
-    return 0;
+    // return 0;
+    ZZ n2;
+    cout << "n2: ";
+    cin >> n2;
+    ZZ invert_n;
+    cout << extendedEuclid(n,n2,invert_n);
+    cout<<endl<<invert_n;
 
-    // ZZ n2;
-    // cout << "n2: ";
-    // cin >> n2;
-    // ZZ invert_n;
-    // cout << extendedEuclid(n,n2,invert_n);
-    // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide :)
 }
 

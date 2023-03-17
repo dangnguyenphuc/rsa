@@ -155,6 +155,6 @@ int main()
     // ZZ invert_n;
     // cout << extendedEuclid(n,n2,invert_n);
     // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide :)
+
 }
 

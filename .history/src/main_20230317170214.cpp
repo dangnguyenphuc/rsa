@@ -17,17 +17,13 @@ bool extendedEuclid(const ZZ& number1, const ZZ& number2, ZZ& t){
 Bézout's identity asserts that "number1" and "number2" are coprime if and only if there exist integers s and t such that
     number2*s + number1*t = 1
     Reducing this identity modulo number2 give:
-    number1*t = 1 mod number2     
-    ===============> Phù hợp để tìm số nghịch đảo do Định nghĩa số nghịch đảo của w là w^(-1) với w^(-1) * w = 1
+    number1*t = 1 mod number2     ===============> Định nghĩa số nghịch đảo.
 */
     t = 0;
-    ZZ newt(1);
-    ZZ r;
-    ZZ newr;
+    ZZ newt = 1;
+    ZZ r = number2;
+    ZZ newr = a;
     ZZ quotient;
-
-    r = number2;
-    newr = number1;
 
     ZZ temp1, temp2;
 
@@ -142,19 +138,18 @@ int main()
     // Example: Prime number is
     // 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000174295123051
 
-    if (isPrime(n, 10))
-        cout << "\n" << n << " is probably prime\n";
-    else
-        cout << "\n" << n << " is composite\n";
+    // if (isPrime(n, 10))
+    //     cout << "\n" << n << " is probably prime\n";
+    // else
+    //     cout << "\n" << n << " is composite\n";
 
-    return 0;
+    // return 0;
+    ZZ n2;
+    cout << "n2: ";
+    cin >> n2;
+    ZZ invert_n;
+    cout << extendedEuclid(n,n2,invert_n);
+    cout<<endl<<invert_n;
 
-    // ZZ n2;
-    // cout << "n2: ";
-    // cin >> n2;
-    // ZZ invert_n;
-    // cout << extendedEuclid(n,n2,invert_n);
-    // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide :)
 }
 
