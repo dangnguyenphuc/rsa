@@ -1,73 +1,48 @@
 #include "../headers/main.h"
 #include <NTL/ZZ.h>
 #include <unistd.h>
-#include <time.h>
 
 using namespace std;
 using namespace NTL;
 
 // trailing zeros:
-long trailing_zeroes(ZZ number) {
-    long bits = 0;
+Bcd#include "../headers/main.h"
+#include <NTL/ZZ.h>
+#include<unistd.h>
+
+using namespace std;
+using namespace NTL;
+
+// trailing zeros:
+ZZ trailing_zeroes(ZZ number) {
+    ZZ bits(0);
 
     if (number!=0) {
+        /* assuming `x` has 32 bits: lets count the low order 0 bits in batches */
         /* mask the 16 low order bits, add 16 and shift them out if they are all 0 */
         while ((number & 0x0000FFFF)==0) { bits += 16; number >>= 16;}
         /* mask the 8 low order bits, add 8 and shift them out if they are all 0 */
-        while ((number & 0x000000FF)==0) { bits +=  8; number >>=  8; }
+        if ((number & 0x000000FF)==0) { bits +=  8; number >>=  8; }
         /* mask the 4 low order bits, add 4 and shift them out if they are all 0 */
-        while ((number & 0x0000000F)==0) { bits +=  4; number >>=  4; }
+        if ((number & 0x0000000F)==0) { bits +=  4; number >>=  4; }
         /* mask the 2 low order bits, add 2 and shift them out if they are all 0 */
-        while ((number & 0x00000003)==0) { bits +=  2; number >>=  2; }
+        if ((number & 0x00000003)==0) { bits +=  2; number >>=  2; }
         /* mask the low order bit and add 1 if it is 0 */
-        if((number & 0x00000001)==0){ bits += 1; }
+        bits += (number & 1) ^ 1;
     }
     return bits;
 }
 
-// Stein's GCD binary GCD
-ZZ S_gcd(ZZ number1, ZZ number2){
-    if( number1 == 0 ) return number2;
-    if (number2 == 0 ) return number1;
-
-
-    long trail1;
-    long trail2;
-    long min_trail;
-
-    trail1 = trailing_zeroes(number1);  number1 = number1>>trail1;                       
-    trail2 = trailing_zeroes(number2);  number2 = number2>>trail2;
-    min_trail = (trail1 > trail2)? trail2 : trail1;
-
-    while (1)
-    {
-        assert(number1%2==1);
-        assert(number2%2==1);
-
-        if(number1 > number2){
-            ZZ _swap;
-            _swap = number1;
-            number1 = number2;
-            number2 = _swap;
-        }
-
-        number2 = number2 - number1;
-
-        if( number2 == 0 )
-        {
-            return number1 << min_trail;
-        }
-
-        number2 = number2 >> trailing_zeroes(number2);
-    }
-    
-
-}
 
 // Euclide
 ZZ E_gcd(ZZ number1, ZZ number2){
     if (number1 == 0) return number2;
     return E_gcd(number2%number1 , number1);
+}
+
+// Stein's GCD binary GCD
+ZZ S_gcd(ZZ number1, ZZ number2){
+    
 }
 
 // Extended Euclide to find invert number
@@ -129,7 +104,7 @@ ZZ modPow(ZZ number, ZZ power, ZZ mod){
     return result;
 }
 
-// Miller-Rabin primality test -> just determine probable prime number
+
 bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
 
     if (ran == 0) return 0;
@@ -195,8 +170,6 @@ bool isPrime(const ZZ& number, long accurancy){
 
 int main()
 {
-    clock_t s,e;
-    double time_taken;
     ZZ n;
     cout << "n: ";
     cin >> n;
@@ -207,26 +180,15 @@ int main()
     //     cout << "\n" << n << " is probably prime\n";
     // else
     //     cout << "\n" << n << " is composite\n";
+    cout<<trailing_zeroes(n);
+    return 0;
 
-    ZZ n2;
-    cout << "n2: ";
-    cin >> n2;
+    // ZZ n2;
+    // cout << "n2: ";
+    // cin >> n2;
     // ZZ invert_n;
     // cout << extendedEuclid(n,n2,invert_n);
     // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide 
-    s = clock();
-    cout << S_gcd(n,n2);
-    e = clock();
-    time_taken = double(e - s) / double(CLOCKS_PER_SEC);
-    printf("\nStein GCD took: %lf \n",time_taken);
-
-    s = clock();
-    cout << E_gcd(n,n2);
-    e = clock();
-    time_taken = double(e - s) / double(CLOCKS_PER_SEC);
-    printf("Euclide GCD took: %lf",time_taken);
-    // cout << trailing_zeroes(n);
-    return 0;
+    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide :)
 }
 

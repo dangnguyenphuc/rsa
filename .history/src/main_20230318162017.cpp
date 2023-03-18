@@ -11,6 +11,7 @@ long trailing_zeroes(ZZ number) {
     long bits = 0;
 
     if (number!=0) {
+        /* assuming `x` has 32 bits: lets count the low order 0 bits in batches */
         /* mask the 16 low order bits, add 16 and shift them out if they are all 0 */
         while ((number & 0x0000FFFF)==0) { bits += 16; number >>= 16;}
         /* mask the 8 low order bits, add 8 and shift them out if they are all 0 */
@@ -129,7 +130,7 @@ ZZ modPow(ZZ number, ZZ power, ZZ mod){
     return result;
 }
 
-// Miller-Rabin primality test -> just determine probable prime number
+
 bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
 
     if (ran == 0) return 0;
@@ -219,7 +220,7 @@ int main()
     cout << S_gcd(n,n2);
     e = clock();
     time_taken = double(e - s) / double(CLOCKS_PER_SEC);
-    printf("\nStein GCD took: %lf \n",time_taken);
+    printf("Stein GCD took: %lf",time_taken);
 
     s = clock();
     cout << E_gcd(n,n2);
