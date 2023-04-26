@@ -2,9 +2,68 @@
 #include <NTL/ZZ.h>
 #include <unistd.h>
 #include <time.h>
+#include <NTL/RR.h>
+#include <NTL/ZZ_p.h>
+#include <NTL/ZZ_pX.h>
+#include <NTL/ZZX.h>
+#include <NTL/vec_ZZ.h>
+#include <NTL/mat_ZZ.h>
+#include <NTL/BasicThreadPool.h>
+#include <NTL/vector.h>
+#include <cmath>
+#include <vector>
+#include <math.h>
 
 using namespace std;
 using namespace NTL;
+
+#define ITERATION_NUM 10
+typedef long long ll;
+
+
+vector<ll> coeffs(ll n) {
+    vector<ll> c((n + 1), ll(1));
+    for (ll i(1); i <= n; i++) {
+        c[i] = c[i - 1] * (n - i + 1) / i;
+    }
+    return c;
+}
+
+bool AKS_primality_test(ll n) {
+    if (n <= 1) {
+        return false;
+    }
+    if (n == 2 || n == 3 || n == 5) {
+        return true;
+    }
+    if (n % 2 == 0 || n % 3 == 0 || n % 5 == 0) {
+        return false;
+    }
+    ll r(2);
+    while (r <= n) {
+        if (n % r == 0) {
+            break;
+        }
+        r = r + 1;
+    }
+    if (r == n) {
+        return true;
+    }
+    for (ll a(2); a <= min(r - 1, ll( sqrt(n) * log2(n) ) ); a++) {
+        vector<ll> c = coeffs(n);
+        c[0] = c[0] - 1;
+        c[a] = c[a] - 1;
+        for (ll i(1); i < n; i++) {
+            for (ll j(n); j >= i; j--) {
+                c[j] =  c[j] - c[j - i];
+            }
+        }
+        if (c[n] % n != 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // trailing zeros:
 long trailing_zeroes(ZZ number) {
@@ -117,16 +176,28 @@ ZZ modMul(const ZZ& number1, const ZZ& number2, const ZZ& mod){
 
 ZZ modPow(ZZ number, ZZ power, ZZ mod){
     assert(power>=long(0));
-    ZZ result(1);
-    while ( power > long(0) ){
-        if( (power & 1) == 1){
-            result = modMul(result,number,mod);
+    if(mod > 0){
+        ZZ result(1);
+        while ( power > long(0) ){
+            if( (power & 1) == 1){
+                result = modMul(result,number,mod);
+            }
+            number = modMul(number, number, mod);
+            power = power >> 1;
         }
-        number = modMul(number, number, mod);
-        power = power >> 1;
-        
+        return result;
+    }else{
+        ZZ result(1);
+        while ( power > long(0) ){
+            if( (power & 1) == 1){
+                result = result*number;
+            }
+            number = number*number;
+            power = power >> 1;
+        }
+        return result;
     }
-    return result;
+    
 }
 
 // Miller-Rabin primality test -> just determine probable prime number
@@ -155,6 +226,8 @@ bool MillerTest(const ZZ& number, const ZZ& d, long r,const ZZ& ran){
 
 }
 
+
+// main Miller-Rabin test
 bool isPrime(const ZZ& number, long accurancy){
     if (number <= 1) return false;
 
@@ -193,13 +266,63 @@ bool isPrime(const ZZ& number, long accurancy){
 
 }
 
+ZZ generate_prime(long n_bits){
+    ZZ res;
+    bool found = false;
+    while (!found)
+    {
+        res = RandomBits_ZZ(n_bits);
+        if (res % 2 == 0) res++;
+        found = isPrime(res, ITERATION_NUM);
+    }
+    
+    return res;
+}
+
+ZZ generate_prime_with_gap(ZZ& p, long key_Bits){
+    ZZ res;
+    bool found = false;
+    ZZ _upper_bound;
+    ZZ _lower_bound;
+    ZZ _middle_bound;
+    ZZ up;
+    ZZ low;
+    ZZ count(0);
+
+    _middle_bound = modPow(ZZ(2),ZZ(key_Bits/2),ZZ(0)) - ZZ(1);
+    _lower_bound = modPow(ZZ(2),ZZ(key_Bits/2)-ZZ(10),ZZ(0));
+    _upper_bound = modPow(ZZ(2),ZZ(key_Bits/2)+ZZ(10),ZZ(0));
+
+    while (!found)
+    {
+        if (count % 2 == 1)
+        {
+            up = _upper_bound;
+            low = p + _lower_bound; 
+            res = low + RandomBnd(up-low);
+        }else{
+            up = p - _middle_bound;
+            low = _lower_bound; 
+            res = low + RandomBnd(up-low);
+        }
+        
+        if (res % 2 == 0) res++;
+        found = isPrime(res, ITERATION_NUM);
+        count = count + 1;
+    }
+    
+    return res;
+}
+
 int main()
 {
-    clock_t s,e;
-    double time_taken;
-    ZZ n;
-    cout << "n: ";
-    cin >> n;
+    SetNumThreads(4); // Number of threads to use for parallelization
+
+    // clock_t s,e;
+    // double time_taken;
+    // ZZ n;
+    // cout << "n: ";
+    // cin >> n;
     // Example: Prime number is
     // 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000174295123051
 
@@ -208,25 +331,40 @@ int main()
     // else
     //     cout << "\n" << n << " is composite\n";
 
-    ZZ n2;
-    cout << "n2: ";
-    cin >> n2;
-    // ZZ invert_n;
-    // cout << extendedEuclid(n,n2,invert_n);
-    // cout<<endl<<invert_n;
-    // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide 
-    s = clock();
-    cout << S_gcd(n,n2);
-    e = clock();
-    time_taken = double(e - s) / double(CLOCKS_PER_SEC);
-    printf("\nStein GCD took: %lf \n",time_taken);
+    // ZZ n2;
+    // cout << "n2: ";
+    // cin >> n2;
+    // // ZZ invert_n;
+    // // cout << extendedEuclid(n,n2,invert_n);
+    // // cout<<endl<<invert_n;
+    // // chạy thử các trường hợp tìm số nghịch đảo tương ứng trong slide 
+    // s = clock();
+    // cout << S_gcd(n,n2);
+    // e = clock();
+    // time_taken = double(e - s) / double(CLOCKS_PER_SEC);
+    // printf("\nStein GCD took: %lf \n",time_taken);
 
-    s = clock();
-    cout << E_gcd(n,n2);
-    e = clock();
-    time_taken = double(e - s) / double(CLOCKS_PER_SEC);
-    printf("Euclide GCD took: %lf",time_taken);
-    // cout << trailing_zeroes(n);
+    // s = clock();
+    // cout << E_gcd(n,n2);
+    // e = clock();
+    // time_taken = double(e - s) / double(CLOCKS_PER_SEC);
+    // printf("Euclide GCD took: %lf",time_taken);
+    // // cout << trailing_zeroes(n);
+    
+
+    // Generate 2 prime:
+    ZZ p;
+    p = generate_prime(512);
+
+    // Print the prime number
+    cout << "p = " << p << endl;
+
+    ZZ q;
+    q = generate_prime_with_gap(p, 1024);
+
+    // Print the prime number
+    cout << "q = " << q << endl;
+
     return 0;
 }
 
