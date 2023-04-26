@@ -45,3 +45,7 @@ g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -l
   1) Generate prime number with given Size.
   2) Generate prime number with a Key Size and another prime number .
   ![Testing program](/img/test2.png "2 primes p and q")
+
+### Update 5:
+* Capture all to 1 class "RSA"
+![Testing program](/img/update5.png "Using RSA class")
