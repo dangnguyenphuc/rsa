@@ -6,7 +6,11 @@ Cryptography and Network Security - 222
   - Ung Van Hung - 2013401
   - Nguyen Phuc Dang - 2012968
   - Le Trung Duc - 2012995
+ 
+
 HCMUT - Ho Chi Minh University of Technology.
+
+
 ## Abstract:
 
 In this assignment, we will implement a simple RSA encryption/decryption by C++.
@@ -19,7 +23,7 @@ In "NTL Testing" commit, I had pushed a testing NTL library program by C++.
 - After setting up the env then compile the main.cpp file:
   ![Testing program](/img/testing.png "testing in terminal")
 
-## Compile these file
+## Compile these files
 Compile file in __src/__ and export binary file to __debug/__
 ```bash
 g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -lgmp -lm
