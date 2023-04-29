@@ -49,3 +49,7 @@ g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -l
 ### Update 5:
 * Capture all to 1 class "RSA"
 ![Testing program](/img/update5.png "Using RSA class")
+
+### Update 6:
+* Encrypt and Decrypt message
+![Testing program](/img/update6.png "Encryption and Decryption")
