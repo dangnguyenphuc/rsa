@@ -33,7 +33,7 @@ string readFile(string fileName){
 int main()
 {
    writeFile("key/example.txt", "Dang1012");
-   string res = readFile("key/example.txt");
+   string res = readFile("message/MyMessage.txt");
    cout << res;
    return 0;
 }

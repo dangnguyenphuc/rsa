@@ -24,10 +24,16 @@ In "NTL Testing" commit, I had pushed a testing NTL library program by C++.
   ![Testing program](/img/testing.png "testing in terminal")
 
 ## Compile these files
-Compile file in __src/__ and export binary file to __debug/__
-```bash
-g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -lgmp -lm
-```
+- Old version: 
+  Compile file in __src/__ and export binary file to __debug/__
+  ```bash
+  g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -lgmp -lm
+  ```
+- New version: 
+  - ```make main```: to compile and run main.cpp and its executed file.
+  - ```make test```: to compile and run testing.cpp and its executed file.
+  - ```make clean```: to remove all executed files in debug folder.
+
 
 ## Update 
 
@@ -53,3 +59,6 @@ g++ -g -O2 -std=c++11 -pthread -march=native src/main.cpp -o debug/main -lntl -l
 ### Update 6:
 * Encrypt and Decrypt message
 ![Testing program](/img/update6.png "Encryption and Decryption")
+
+### Update 7:
+* Add makefile
