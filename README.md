@@ -62,3 +62,7 @@ In "NTL Testing" commit, I had pushed a testing NTL library program by C++.
 
 ### Update 7:
 * Add makefile
+
+### Update 8:
+* Interact on Console
+![Testing program](/img/update8.png "Console Log")

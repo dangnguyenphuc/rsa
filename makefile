@@ -4,6 +4,7 @@ DEBUG_TEST_FILE = "debug/test"
 TEST_FILE = "src/testing.cpp"
 
 main: src/main.cpp headers/main.h
+	chmod 755 cipher/*
 	g++ -g -O2 -std=c++11 -pthread -march=native $(MAIN_FILE) -o $(DEBUG_MAIN_FILE) -lntl -lgmp -lm
 	./$(DEBUG_MAIN_FILE)
 test: src/testing.cpp
