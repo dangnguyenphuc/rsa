@@ -92,7 +92,7 @@ void writeFileZZ(string fileName, ZZ message){
         std::cerr << "\nError opening file." << std::endl;
         return;
     }
-    outfile << message; // write the line to the output file
+    outfile << message;
     outfile.close(); // close the output file
 }
 
@@ -649,9 +649,9 @@ public:
     void encryption(string fileName = "message/MyMessage.txt", string cipherFile = "cipher/encrypt.enc"){
         ZZ message = String_to_ZZ(readFile(fileName));
         ZZ cipher(modPow(message, this->e,this->n));
-        string c = ZZ_to_String(cipher);
+        string cipherString = ZZ_to_String(cipher);
         writeFileZZ(cipherFile, cipher);
-        cout << "\n\nMessage Encryption: " << c;
+        cout << "\n\nMessage Encryption: " << cipherString;
         cout << "\n\nCiphertext was written to " << cipherFile <<"\n";
     }
 
@@ -704,10 +704,10 @@ while ( true ) {
         cout << "\t2. Calculate the largest divisor when given two large integers." << endl;
         cout << "\t3. Calculate the decryption key d given the encryption key e and two large primes." << endl;
         cout << "\t4. Generate random key set when given 2 large prime numbers." << endl;
-        cout << "\t5. Encryption given the message and encryption key e and n." << endl;
+        cout << "\t5. Encrypt when given the message and encryption key e and n." << endl;
         cout << "\t6. Decrypt when given encrypted message and decryption key d and n." << endl;
         cout << "\t7. Generate d and e randomly with your input as Key bit length." << endl;
-        cout << "\t8. Encryption and Decryption Message with current Pub and Pri Key." << endl;
+        cout << "\t8. Encryption and Decryption Message with current Public and Private Key." << endl;
         cout << "\t0. Exit" << endl;
     cout << "--------------------------------------------------------------------------------------------" << endl;
     
